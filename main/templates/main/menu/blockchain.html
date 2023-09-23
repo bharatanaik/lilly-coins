@@ -1,0 +1,35 @@
+{% extends 'main/menu.html' %}
+{% block menu %}
+<div class="container">
+    <h1># Block Chain</h1>
+    <div class="table-responsive card shadow">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Hash</th>
+                    <th>Miner</th>
+                    <th>Mined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for block in block_list %}
+                <tr>
+                    <td scope="row">{{ block.index }}</td>
+                    <td><a class="link-dark" href="{% url 'block' block.hash %}">{{ block.hash | upper}}</a></td>
+                    <td>{{ block.miner.username }}</td>
+                    <td>{{ block.timestamp }}</td>
+                </tr>
+                {% empty %}
+                <div class="alert alert-warning" role="alert">
+                    <strong>No block was mined</strong>
+                </div>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock menu %}

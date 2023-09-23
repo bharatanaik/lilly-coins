@@ -1,0 +1,76 @@
+{% extends 'main/menu.html' %}
+{% block menu %}
+<div class="container">
+    <div class="card m-3 p-3 shadow table-responsive">
+        <h3 class="card-title mb-3">Block {{ Block.index }}</h3>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Hash</td>
+                    <td>{{ Block.hash }}</td>
+                </tr>
+                <tr>
+                    <td>Timestamp</td>
+                    <td>{{ Block.timestamp }}</td>
+                </tr>
+                <tr>
+                    <td>Height</td>
+                    <td>{{ Block.index }}</td>
+                </tr>
+                <tr>
+                    <td>Miner</td>
+                    <td>{{ Block.miner }}</td>
+                </tr>
+                <tr>
+                    <td>Previous Hash</td>
+                    <td>{{ Block.prev_hash | default:"No previous Hash for Block 1" }}</td>
+                </tr>
+                <tr>
+                    <td>No of Transactions</td>
+                    <td>{{ Block.no_of_transactions }}</td>
+                </tr>
+                <tr>
+                    <td>Difficulty</td>
+                    <td>{{ Block.difficulty }}</td>
+                </tr>
+                <tr>
+                    <td>Size</td>
+                    <td>{{ Block.block_size }} bytes</td>
+                </tr>
+                <tr>
+                    <td>Nonce</td>
+                    <td>{{ Block.nonce }}</td>
+                </tr>
+                <tr>
+                    <td>Block Reward</td>
+                    <td>{{ Block.block_reward }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card m-3 p-3 shadow table-responsive">
+        <h3 class="card-title mb-3">Block Transactions</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Hash</th>
+                        <th>amount</th>
+                        <th>timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in Block.transactions.all %}
+                    <tr>
+                        <td>{{ transaction.hash }}</td>
+                        <td>{{ transaction.amount }}</td>
+                        <td>{{ transaction.timestamp }}</td>
+                    </tr>
+                    {% endfor %}
+            
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock menu %}

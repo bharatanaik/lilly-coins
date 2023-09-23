@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-md-2">
+    <ul class="list-group">
+      <a href="{% url 'account' %}" class="list-group-item "><i class="bi bi-person-circle me-2"></i>My Account</a>
+      <a href="{% url 'transaction' recv_address='default' %}" class="list-group-item"><i class="bi bi-credit-card me-2"></i>Make Transactions</a>
+      <a href="{% url 'blockchain' %}" class="list-group-item"><i class="bi bi-box me-2"></i>Block Chain</a>
+      <a href="{% url 'mining' %}" class="list-group-item"><i class="bi bi-hammer me-2"></i>Mine blocks</a>
+    </ul>
+
+  </div>
+  <div class="col-md-10">
+    {% block menu %}
+
+    {% endblock menu %}
+  </div>
+</div>
+{% endblock content %}

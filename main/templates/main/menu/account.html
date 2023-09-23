@@ -1,0 +1,50 @@
+{% extends 'main/menu.html' %}
+{% load qr_code %}
+{% load static %}
+{% block menu %}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow m-3 text-center" style="border-radius: 30px;">
+            {% qr_from_text  user_transaction_url %}
+            <p class="bg-success text-light text-uppercase"><b>Scan To Pay</b></p>
+            <p class="text-muted">Only accepts LC</p>
+            <div class="card-body bg-light">
+                <h5 class="card-title">@{{user.username}}</h5>
+                <p class="card-text">{{user.email}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow m-3" style="border-radius: 40px;">
+            <div class="card-body">
+                <h2 class="card-text mb-2">
+                    Balance: <span>{{user.amount}}</span>
+                    {% if pending_coins %}
+                    <p style="font-size: small;" class="text-muted">Pending Coins: <span>{{pending_coins}}</span> (mine transactions to get LCs)</p>
+                    {% endif %}
+                </h2>
+                <div class="card-text mb-3">LC address: <input class="form-control" type="text"
+                        value="{{ user.address }}" readonly></div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">RSA PUBLIC KEY </label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" readonly
+                        aria-describedby="RSAHelp">
+                            {{ user.public_key }}
+                        </textarea>
+                    <div id="RSAHelp" class="form-text">LC transactions uses RSA algorithm for secure signature</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    svg {
+        display: block;
+        margin: auto;
+    }
+</style>
+
+
+{% endblock menu %}

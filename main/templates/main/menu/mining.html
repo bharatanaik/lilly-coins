@@ -1,0 +1,102 @@
+{% extends 'main/menu.html' %}
+{% load static %}
+{% block menu %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1><i class="bi bi-gear-wide-connected"></i> Mining Area</h1>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">Unconfirmed Transactions</h3>
+            <small>Showing oldest 20 unconfirmed transactions (maximum transaction in block limited to 20)</small>
+            <small>Select Transactions below to get data</small>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tr>
+                        <th></th>
+                        <th>Hash</th>
+                        <th>Amount</th>
+                        <th>Time</th>
+                    </tr>
+                    <form method="post" action="{% url 'mining' %}">
+                        {% csrf_token %}
+                        {% for transaction in transactions %}
+                        <tr>
+                            <td>
+                                <div class="form-check"><input class="form-check-input" name="transactions"
+                                        type="checkbox" value="{{ transaction.hash }}"></div>
+                            </td>
+                            <td>{{ transaction.hash }}</td>
+                            <td>{{ transaction.amount }}</td>
+                            <td>{{ transaction.timestamp }}</td>
+                        </tr>
+                        {% empty %}
+                        <div class="alert alert-warning" role="alert">
+                            <strong>No Unconfirmed Transactions </strong>
+                        </div>
+                        {% endfor %}
+                        <button class="btn btn-dark m-3"><b><i class="bi bi-cpu me-2"></i> MINE BLOCK</b></button>
+                    </form>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-group my-2">
+        {% if json_data %}
+        <div class="card m-1">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="json_data" class="form-label">MINING JSON DATA</label>
+                    <textarea id="json_data" class="form-control" rows="8" readonly>{{ json_data }}</textarea>
+                </div>
+                <div id="spinner" class="spinner-border spinner-border-sm" role="status"></div>
+                <p id="hash-text"></p>
+                <div class="progress" role="progressbar">
+                    <div id="hash-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-black"
+                        style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="card m-1">
+            <div class="card-body">
+                <p class="card-text">Get Mining reward of {{ block_reward }} LC for a Block</p>
+                <div class="mb-3">
+                    <form method="post" action="{% url 'add-block' %}">
+                        {% csrf_token %}
+                        {% if transaction_hashes %}
+                        <div class="mb-3">
+                            <label class="form-label">List of Transactions</label>
+                            <ul>
+                                {% for hash in transaction_hashes %}
+                                <li><input class="form-control mb-1" type="text" name="transaction_hash"
+                                        value="{{ hash }}" readonly></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            <label for="id_block_hash" class="form-label">256-bit Mined Block Hash</label>
+                            <input type="text" class="form-control" name="block_hash" maxlength="64" id="id_block_hash"
+                                aria-describedby="helpHash" disabled>
+                            <small id="helpHash" class="form-text text-muted">hash must be 64 char long and must follow
+                                rules.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_nonce" class="form-label">Nonce Value</label>
+                            <input type="text" class="form-control" id="nonce" name="nonce" maxlength="64"
+                                aria-describedby="helpNonce" disabled>
+                            <small id="helpNonce" class="form-text text-muted">nonce is value of trial error
+                                loop</small>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ block_json_data | json_script:"json-data" }}
+<script src="{% static 'js/mining.js' %}"></script>
+{% endblock menu %}

@@ -1,0 +1,47 @@
+{% extends 'main/menu.html' %}
+{% load static %}
+{% block menu %}
+<div class="container my-3">
+    <h1>Make a secure Transaction</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-3 m-3 shadow">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    {{message}}
+                </div>
+                {% else %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    {{message}}
+                </div>
+                {% endif %}
+                {% endfor %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_reciever" class="form-label">LC address</label>
+                        {% if recv_address %}
+                        <input type="text" class="form-control" name="address" id="id_address"
+                            value="{{ recv_address }}" aria-describedby="addressHelp" readonly>
+                        {% else %}
+                        <input type="text" class="form-control" name="address" id="id_address"
+                            aria-describedby="addressHelp" required>
+                        {% endif %}
+                        <div class="form-text" id="addressHelp">128-bit LC address of reciever for anonymous
+                            transaction</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_amount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" name="amount" id="id_amount" max="" required>
+                    </div>
+                    <button type="submit" class="btn btn-dark">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock menu %}
