@@ -41,7 +41,7 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     signature = models.TextField()
     confirmed = models.BooleanField(default=False)
-    hash = models.CharField(max_length=64)
+    hash = models.CharField(max_length=64, unique=True)
     
     def signTransaction(self):
         private_key =self.sender.get_private_key()
