@@ -1,11 +1,12 @@
 "settings file - here we have all the constants and configurations"
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-^5qt(g1(%vniv&)5^xwq%c*+eq^rz4hfi27ki%9!)8*qu#=!d*'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -59,11 +60,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'ntUltzgEWHpzhHQ9',
-        'HOST': 'db.pffnunxtdsxjdnxpisfx.supabase.co',
-        'PORT': 5432,
+        'NAME':os.environ.get("NAME"),
+        'USER': os.environ.get("USER"),
+        'PASSWORD': os.environ.get("PASSWORD"),
+        'HOST': os.environ.get("HOST"),
+        'PORT': int(os.environ.get("PORT", 5432)),
     }
 }
 
